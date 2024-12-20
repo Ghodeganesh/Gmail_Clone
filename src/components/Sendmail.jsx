@@ -1,14 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { RxCross2 } from 'react-icons/rx'
 import { FaRegWindowMinimize } from "react-icons/fa";
+import { useDispatch, useSelector } from 'react-redux';
+import { setOpen } from '../Reducs/appSlice';
+
 const Sendmail = () => {
+    const open = useSelector(store => store.appslice.open)
+    const dispatch = useDispatch()
+    const handlerCompose = () => {
+        console.log("Closedd")
+        dispatch(setOpen(false))
+    }
+
     return (
-        <div className='w-[800px]  bg-white shadow-xl shadow-slate-100 rounded-t-2xl'>
+        <div className={`${open ? 'block' : 'hidden'} max-w-[800px]  bg-white shadow-xl shadow-slate-100 rounded-t-2xl`}>
             <div className='flex justify-between items-center px-3 bg-[#F2F6FC]'>
                 <h1 className='font-semibold'>New Messages</h1>
                 <div className='flex items-center justify-between gap-1'>
                     <div className='p-2 rounded-full cursor-pointer hover:bg-gray-300'><FaRegWindowMinimize size={"10px"} /></div>
-                    <div className='p-2 items-center cursor-pointer rounded-full hover:bg-gray-300'><RxCross2 size={"18px"} /></div>
+                    <div onClick={handlerCompose} className='p-2 items-center cursor-pointer rounded-full hover:bg-gray-300'><RxCross2 size={"18px"} /></div>
                 </div>
 
             </div>

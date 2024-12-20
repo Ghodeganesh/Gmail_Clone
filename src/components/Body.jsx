@@ -6,6 +6,7 @@ import Sidebar from './Sidebar'
 const Body = () => (
   <div className='flex '>
     <Sidebar />
+    {/* <Sendmail /> */}
     <Outlet />
   </div>
 )

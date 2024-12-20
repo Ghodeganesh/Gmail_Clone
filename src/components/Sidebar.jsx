@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { LuPen } from 'react-icons/lu'
 import { MdExpandMore } from "react-icons/md";
 import { MdOutlineDrafts } from "react-icons/md";
@@ -7,7 +7,8 @@ import { MdOutlineSnooze } from "react-icons/md";
 import { MdQueryBuilder } from "react-icons/md";
 import { IoMdStarOutline } from "react-icons/io";
 import { FaInbox } from "react-icons/fa";
-
+import { useDispatch } from 'react-redux';
+import { setOpen } from '../Reducs/appSlice';
 const sidebarData = [{
     icon: <FaInbox size={"24px"} />,
     name: "inbox"
@@ -31,10 +32,15 @@ const sidebarData = [{
 }]
 
 const Sidebar = () => {
+    const dispatch = useDispatch()
+
+    const handlerCompose = () => {
+        dispatch(setOpen(true))
+    }
     return (
         <div className='w-[15%]  p-3'>
             <div className=''>
-                <button className='flex gap-2 font-semibold items-center bg-[#C2E7FF] px-6 py-4  rounded-2xl hover:shadow-md hover:shadow-slate-300 '>
+                <button onClick={handlerCompose} className='flex gap-2 font-semibold items-center bg-[#C2E7FF] px-6 py-4  rounded-2xl hover:shadow-md hover:shadow-slate-300 '>
                     <LuPen />
                     Compose
                 </button>
