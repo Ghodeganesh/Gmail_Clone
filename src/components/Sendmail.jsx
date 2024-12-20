@@ -5,11 +5,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setOpen } from '../Reducs/appSlice';
 
 const Sendmail = () => {
+    const [formData, setFormData] = useState({
+        to: "",
+        subject: "",
+        message: ""
+    })
+
     const open = useSelector(store => store.appslice.open)
     const dispatch = useDispatch()
     const handlerCompose = () => {
         console.log("Closedd")
         dispatch(setOpen(false))
+    }
+    const submitHandler = (e) => {
+        e.preventDefault()
+        console.log(formData)
+    }
+    const inputHandler = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
     return (
@@ -22,10 +35,10 @@ const Sendmail = () => {
                 </div>
 
             </div>
-            <form className='flex flex-col mx-2' >
-                <input type="text" placeholder='To' className='outline-none border-b border-b-gray-500  py-2 px-2 w-full text-gray-600' />
-                <input type="text" placeholder='Subjext' className='outline-none border-b border-b-gray-500  py-2 px-1 w-full text-gray-600' />
-                <textarea name="" clo={30} rows={10} className='outline-none'></textarea>
+            <form onSubmit={submitHandler} className='flex flex-col mx-2' >
+                <input value={formData.to} name="to" onChange={inputHandler} type="text" placeholder='To' className='outline-none border-b border-b-gray-500  py-2 px-2 w-full text-gray-600' />
+                <input value={formData.subject} name="subject" onChange={inputHandler} type="text" placeholder='Subjext' className='outline-none border-b border-b-gray-500  py-2 px-1 w-full text-gray-600' />
+                <textarea value={formData.message} name="message" onChange={inputHandler} clo={30} rows={10} className='outline-none'></textarea>
                 <button className='px-3 p-3 bg-[#0B57D0] rounded-md text-white'>Send</button>
             </form>
 
