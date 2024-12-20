@@ -3,6 +3,8 @@ import { RxCross2 } from 'react-icons/rx'
 import { FaRegWindowMinimize } from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
 import { setOpen } from '../Reducs/appSlice';
+import { db } from '../../Firbase';
+import { addDoc, collection, serverTimestamp, Timestamp } from 'firebase/firestore';
 
 const Sendmail = () => {
     const [formData, setFormData] = useState({
@@ -17,9 +19,24 @@ const Sendmail = () => {
         console.log("Closedd")
         dispatch(setOpen(false))
     }
-    const submitHandler = (e) => {
+    const submitHandler = async (e) => {
         e.preventDefault()
-        console.log(formData)
+        // console.log(formData)
+        await addDoc(collection(db, "Emails"), {
+            to: formData.to,
+            subject: formData.subject,
+            message: formData.message,
+            createdAt:serverTimestamp(),
+            // createdAt: new Date(email.createdAt.seconds * 1000).toISOString()
+        })
+        console.log("data aaya ", formData)
+        console.log("data aaya ", formData)
+        setFormData({
+            to: "",
+            subject: "",
+            message: ""
+        })
+        dispatch(setOpen(false))
     }
     const inputHandler = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })

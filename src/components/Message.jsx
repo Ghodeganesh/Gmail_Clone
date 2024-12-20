@@ -2,12 +2,18 @@ import React from 'react'
 import { FaRegSquare, FaUserFriends } from "react-icons/fa";
 import { IoMdStarOutline } from "react-icons/io";
 import { RxDragHandleDots1 } from "react-icons/rx";
+import { useDispatch } from 'react-redux';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { setSelectedEmail } from '../Reducs/appSlice';
 
-const Message = () => {
+const Message = ({ data }) => {
+  console.log(data)
+  const dispatch = useDispatch()
+
   const navigate = useNavigate()
   const navigateTo = () => {
-    navigate("/mail/123")
+    dispatch(setSelectedEmail(data))
+    navigate(`/mail/${data}`)
   }
 
   return (
@@ -19,11 +25,11 @@ const Message = () => {
           <IoMdStarOutline size={"20px"} />
         </div>
         <div className='flex-1 ml-6 w-full  truncate max-w-full text-gray-600 items-center'>
-          Newsletter
+          {data.message}
         </div>
       </div>
       <div className='flex gap-1 items-center'>
-        Newsletter
+        {new Date(data?.createdAt?.seconds * 1000).toUTCString()}
       </div>
     </div>
   )
