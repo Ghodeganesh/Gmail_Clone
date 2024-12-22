@@ -4,9 +4,8 @@ import Sidebar from './Sidebar'
 
 
 const Body = () => (
-  <div className='flex '>
+  <div className='flex bg-[#F6F8FC]'>
     <Sidebar />
-    {/* <Sendmail /> */}
     <Outlet />
   </div>
 )

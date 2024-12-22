@@ -1,62 +1,57 @@
-import React, { useState } from 'react'
-import { LuPen } from 'react-icons/lu'
-import { MdExpandMore } from "react-icons/md";
-import { MdOutlineDrafts } from "react-icons/md";
+import React from 'react';
+import { LuPen } from 'react-icons/lu';
+import { MdExpandMore, MdOutlineDrafts, MdOutlineSnooze, MdQueryBuilder } from "react-icons/md";
 import { LuSendHorizontal } from "react-icons/lu";
-import { MdOutlineSnooze } from "react-icons/md";
-import { MdQueryBuilder } from "react-icons/md";
 import { IoMdStarOutline } from "react-icons/io";
 import { FaInbox } from "react-icons/fa";
 import { useDispatch } from 'react-redux';
 import { setOpen } from '../Reducs/appSlice';
-const sidebarData = [{
-    icon: <FaInbox size={"24px"} />,
-    name: "inbox"
-},
-{
-    icon: <IoMdStarOutline size={"24px"} />,
-    name: "starred"
-}, {
-    icon: <MdQueryBuilder size={"24px"} />,
-    name: "snooze"
-}, {
-    icon: <LuSendHorizontal size={"24px"} />,
-    name: "sent"
-},
-{
-    icon: <MdOutlineDrafts size={"24px"} />,
-    name: "Draft"
-}, {
-    icon: <MdExpandMore size={"24px"} />,
-    name: "more"
-}]
+
+const sidebarData = [
+    { icon: <FaInbox size="24px" />, name: "Inbox" },
+    { icon: <IoMdStarOutline size="24px" />, name: "Starred" },
+    { icon: <MdQueryBuilder size="24px" />, name: "Snoozed" },
+    { icon: <LuSendHorizontal size="24px" />, name: "Sent" },
+    { icon: <MdOutlineDrafts size="24px" />, name: "Drafts" },
+    { icon: <MdExpandMore size="24px" />, name: "More" },
+];
 
 const Sidebar = () => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
-    const handlerCompose = () => {
-        dispatch(setOpen(true))
-    }
+    const handleCompose = () => {
+        dispatch(setOpen(true));
+    };
+
     return (
-        <div className='w-[15%]  p-3'>
-            <div className=''>
-                <button onClick={handlerCompose} className='flex gap-2 font-semibold items-center bg-[#C2E7FF] px-6 py-4  rounded-2xl hover:shadow-md hover:shadow-slate-300 '>
+        <div className="hidden sm:w-[15%]  md:block md:w-[20%] bg-[#F6F8FC] p-3 shadow-md">
+            {/* Compose Button */}
+            <div>
+                <button
+                    onClick={handleCompose}
+                    className="flex gap-2 items-center bg-blue-100 px-6 py-3 rounded-2xl font-semibold text-gray-700 hover:shadow-md hover:bg-blue-200 transition duration-200"
+                    aria-label="Compose"
+                >
                     <LuPen />
                     Compose
                 </button>
             </div>
-            <div className='mt-5 text-gray-500 '>
-                {
-                    sidebarData.map((data, index) => {
-                        return (<div key={index} className='flex gap-4 pl-6 items-center hover:bg-[#D3E3FD] py-1 rounded-r-xl'>
-                            <p>{data.icon}</p>
-                            <p>{data.name}</p>
-                        </div>)
-                    })
-                }
+
+            {/* Sidebar Menu */}
+            <div className="mt-5 text-gray-600">
+                {sidebarData.map((item, index) => (
+                    <div
+                        key={index}
+                        className="flex items-center gap-4 pl-4 py-2 rounded-r-xl hover:bg-blue-100 cursor-pointer transition duration-200"
+                        aria-label={item.name}
+                    >
+                        <span>{item.icon}</span>
+                        <p className="text-sm md:text-base">{item.name}</p>
+                    </div>
+                ))}
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Sidebar
+export default Sidebar;

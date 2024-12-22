@@ -1,66 +1,115 @@
-import React, { useState } from 'react'
-import { RxCross2 } from 'react-icons/rx'
-import { FaRegWindowMinimize } from "react-icons/fa";
+
+import React, { useState } from 'react';
+import { RxCross2 } from 'react-icons/rx';
+import { FaRegWindowMinimize } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { setOpen } from '../Reducs/appSlice';
 import { db } from '../../Firbase';
-import { addDoc, collection, serverTimestamp, Timestamp } from 'firebase/firestore';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 
 const Sendmail = () => {
-    const [formData, setFormData] = useState({
-        to: "",
-        subject: "",
-        message: ""
-    })
+  const [formData, setFormData] = useState({
+    to: '',
+    subject: '',
+    message: '',
+  });
 
-    const open = useSelector(store => store.appslice.open)
-    const dispatch = useDispatch()
-    const handlerCompose = () => {
-        console.log("Closedd")
-        dispatch(setOpen(false))
-    }
-    const submitHandler = async (e) => {
-        e.preventDefault()
-        // console.log(formData)
-        await addDoc(collection(db, "Emails"), {
-            to: formData.to,
-            subject: formData.subject,
-            message: formData.message,
-            createdAt:serverTimestamp(),
-            // createdAt: new Date(email.createdAt.seconds * 1000).toISOString()
-        })
-        console.log("data aaya ", formData)
-        console.log("data aaya ", formData)
-        setFormData({
-            to: "",
-            subject: "",
-            message: ""
-        })
-        dispatch(setOpen(false))
-    }
-    const inputHandler = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value })
+  const open = useSelector((store) => store.appslice.open);
+  const dispatch = useDispatch();
+
+  const handleCloseCompose = () => {
+    dispatch(setOpen(false));
+  };
+
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!formData.to || !formData.subject || !formData.message) {
+      alert('All fields are required!');
+      return;
     }
 
-    return (
-        <div className={`${open ? 'block' : 'hidden'} max-w-[800px]  bg-white shadow-xl shadow-slate-100 rounded-t-2xl`}>
-            <div className='flex justify-between items-center px-3 bg-[#F2F6FC]'>
-                <h1 className='font-semibold'>New Messages</h1>
-                <div className='flex items-center justify-between gap-1'>
-                    <div className='p-2 rounded-full cursor-pointer hover:bg-gray-300'><FaRegWindowMinimize size={"10px"} /></div>
-                    <div onClick={handlerCompose} className='p-2 items-center cursor-pointer rounded-full hover:bg-gray-300'><RxCross2 size={"18px"} /></div>
-                </div>
+    try {
+      await addDoc(collection(db, 'Emails'), {
+        ...formData,
+        createdAt: serverTimestamp(),
+      });
 
-            </div>
-            <form onSubmit={submitHandler} className='flex flex-col mx-2' >
-                <input value={formData.to} name="to" onChange={inputHandler} type="text" placeholder='To' className='outline-none border-b border-b-gray-500  py-2 px-2 w-full text-gray-600' />
-                <input value={formData.subject} name="subject" onChange={inputHandler} type="text" placeholder='Subjext' className='outline-none border-b border-b-gray-500  py-2 px-1 w-full text-gray-600' />
-                <textarea value={formData.message} name="message" onChange={inputHandler} clo={30} rows={10} className='outline-none'></textarea>
-                <button className='px-3 p-3 bg-[#0B57D0] rounded-md text-white'>Send</button>
-            </form>
+      setFormData({ to: '', subject: '', message: '' });
+      dispatch(setOpen(false));
+    } catch (error) {
+      console.error('Error sending email:', error);
+    }
+  };
 
+  return (
+    <div
+      className={`${
+        open ? 'block' : 'hidden'
+      } max-w-full md:max-w-[800px] mx-auto bg-white shadow-lg rounded-t-2xl`}
+    >
+      {/* Header */}
+      <div className="flex justify-between items-center px-4 py-3 bg-gray-100 border-b">
+        <h1 className="font-semibold text-gray-800">New Message</h1>
+        <div className="flex items-center gap-2">
+          <button
+            aria-label="Minimize"
+            className="p-2 rounded-full hover:bg-gray-200 transition"
+          >
+            <FaRegWindowMinimize size="14px" />
+          </button>
+          <button
+            onClick={handleCloseCompose}
+            aria-label="Close"
+            className="p-2 rounded-full hover:bg-gray-200 transition"
+          >
+            <RxCross2 size="18px" />
+          </button>
         </div>
-    )
-}
+      </div>
 
-export default Sendmail
+      {/* Form */}
+      <form onSubmit={handleSubmit} className="flex flex-col p-4 gap-4">
+        <input
+          value={formData.to}
+          name="to"
+          onChange={handleInputChange}
+          type="email"
+          placeholder="To"
+          className="w-full border-b py-2 px-3 text-gray-700 outline-none focus:border-blue-500"
+          required
+        />
+        <input
+          value={formData.subject}
+          name="subject"
+          onChange={handleInputChange}
+          type="text"
+          placeholder="Subject"
+          className="w-full border-b py-2 px-3 text-gray-700 outline-none focus:border-blue-500"
+          required
+        />
+        <textarea
+          value={formData.message}
+          name="message"
+          onChange={handleInputChange}
+          rows="10"
+          placeholder="Message"
+          className="w-full border py-2 px-3 text-gray-700 outline-none focus:border-blue-500 resize-none"
+          required
+        />
+        <button
+          type="submit"
+          className="w-full md:w-auto px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+        >
+          Send
+        </button>
+      </form>
+    </div>
+  );
+};
+
+export default Sendmail;
