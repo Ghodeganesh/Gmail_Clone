@@ -61,22 +61,23 @@ const Mail = () => {
       </div>
 
       {/* <div className='flex justify-between items-center  '>
-          <div className='flex justify-between items-center gap-2'>
-            <p className='text-2xl font-bold'>{selectedEmail?.subject}</p>
-            <p className='px-3 py-1 bg-gray-300 rounded-md text'>inbox</p>
-          </div>
-          <div>
-            <p className='text-gray-500 '>{new Date(selectedEmail?.createdAt?.seconds * 1000).toUTCString()}</p>
-          </div>
+        <div className='flex justify-between items-center gap-2'>
+          <p className='text-2xl font-bold'>{selectedEmail?.subject}</p>
+          <p className='px-3 py-1 bg-gray-300 rounded-md text'>inbox</p>
+        </div>
+        <div>
+          <p className='text-gray-500 '>{new Date(selectedEmail?.createdAt?.seconds * 1000).toUTCString()}</p>
+        </div>
 
-        </div>
-        <div className='mt-5 text-gray-500'>
-          <p>{selectedEmail?.to}</p>
-          <p>To Me</p>
-        </div>
-        <div className='mt-10'>
-          <p>{selectedEmail?.message}</p>
-        </div> */}
+      </div>
+      <div className='mt-5 text-gray-500'>
+        <p>{selectedEmail?.to}</p>
+        <p>To Me</p>
+      </div>
+      <div className='mt-10'>
+        <p>{selectedEmail?.message}</p>
+      </div> */}
+
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }}
@@ -127,12 +128,9 @@ const Mail = () => {
         </motion.div>
       </motion.div>
 
-
-
-
-
-
     </div>
+
+
   )
 }
 
